@@ -1,0 +1,164 @@
+<html ng-app="hw8">
+    <head>
+        <meta charset=utf-8>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <link href="hw8.css" rel="stylesheet">
+
+    </head>
+    <body ng-controller="mainController">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 col-md-3">
+                    <h4 style="color:#3B5998;">FB search</h4>
+                </div>
+                <div class="col-xs-12 col-md-9">
+                    <form  id="input_box" class="form" method="get" onsubmit="return false;">
+                        <div>
+                        <input id="nav" type="text" ng-model="inputValue" placeholder="type something..." required>
+                        <button type="submit" id="question" ng-click="connect(inputValue,0)"><span class="glyphicon glyphicon-search"></span></button>
+                        <button class="icon" id="clear" ng-click="clear()">Clear</button>
+                        </div>
+                    </form>
+                </div>
+    </div>
+  </div>
+</nav>   
+<ul class="nav nav-tabs nav-justified" style="border-bottom: 1px solid #3B5998;">
+    <li ng-class={active:isSelected(0)}><a href="#" ng-click="select(0)">Users</a></li>
+    <li ng-class={active:isSelected(1)}><a href="#" ng-click="select(1)">Pages</a></li>
+    <li ng-class={active:isSelected(2)}><a href="#" ng-click="select(2)">Events</a></li>
+    <li ng-class={active:isSelected(3)}><a href="#" ng-click="select(3)">Places</a></li>
+    <li ng-class={active:isSelected(4)}><a href="#" ng-click="select(4)">Groups</a></li>
+    <li ng-class={active:isSelected(5)}><a href="#" ng-click="select(5)">Favorites</a></li>
+</ul>
+        <div style="position:relative;">
+        <div class="main" ng-hide="!inMain" >
+            <div class="progress" ng-show="isProcessed">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                <span class="sr-only">50% Complete</span>
+            </div>
+        </div>
+            <div class="table-responsive" ng-show="!isProcessed">
+            <table class="table" role="table" ng-if="tab==5&&rowData!=''">
+                <tr>
+                    <th>#</th>
+                    <th>Profile photo</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Favorite</th>
+                    <th>Details</th>
+                </tr>
+                <tr ng-repeat="row in rowData" role="tr">
+                    <td role="td">{{$index+1}}</td>
+                    <td role="td"><a ng-href="{{row.picture}}" target=_blank><img ng-src="{{row.picture}}" width="50px" height="50px" style="border-radius:25px"></a></td>
+                    <td role="td">{{row["name"]}}</td>
+                    <td role="td">{{typeList[row.type]}}</td>
+                    <td role="td"><button ng-click="trash(row)" class="icon"><span class="glyphicon glyphicon-trash"></span></button></td>
+                    <td role="td"><button class="icon" ng-click=switch(row)><span class="glyphicon glyphicon-chevron-right"></span></button></td>
+                </tr>
+            </table>
+            <table class="table"  role="table" ng-if="tab!=5&&result!='bad'" >
+                <tr>
+                    <th>#</th>
+                    <th>Profile photo</th>
+                    <th>Name</th>
+                    <th>Favorite</th>
+                    <th>Details</th>
+                </tr>
+                <tr ng-repeat="row in rowData" role="tr">
+                    <td role="td">{{$index+1}}</td>
+                    <td role="td"><a ng-href="{{row.picture.data.url}}" target=_blank><img ng-src={{row["picture"]["data"]["url"]}} ng-if="tab!=5"width="50px" height="50px" style="border-radius:25px"></a></td>
+
+                    <td role="td">{{row["name"]}}</td>
+                    <td role="td"><button class="icon" ng-click="lighting($index,row)" ng-if="tab!=5"><span ng-class="{true:'glyphicon glyphicon-star',false:'glyphicon glyphicon-star-empty'}[light[$index]]"></span></button></td>
+                    <td role="td"><button class="icon" ng-click=switch(row)><span class="glyphicon glyphicon-chevron-right"></span></button></td>
+                </tr>
+            </table>
+            </div>
+            <div class="next_prev">
+            <button class="icon np" ng-show='prev!=""&&next!=""&&tab!=5' ng-click="connect(prev,1)" style="float:left;">prev</button>
+            <button class="icon np" ng-show='next!=""&&prev!=""&&tab!=5' ng-click="connect(next,1)" style="float:right">next</button>
+            <button class="icon np" ng-show='prev!=""&&next==""&&tab!=5' ng-click="connect(prev,1)" style="width:40%;margin-left:30%;">prev</button>
+            <button class="icon np" ng-show='next!=""&&prev==""&&tab!=5' ng-click="connect(next,1)" style="width:40%;margin-left:30%;">next</button>
+            </div>
+        </div>
+        <div class="detail" ng-hide="inMain">
+            <div class="container">
+                <div class="detail-nav"style="overflow:hidden; width:100%">
+                    <button id="back-button" ng-show="!inMain" ng-click="select(tab)" class="icon" style="float: left;height: 30px;"><span class="glyphicon glyphicon-chevron-left"></span>Back</button>
+                        <div class="detail-button" style="float: right;height: 50px;">
+                        <button class="icon" ng-click="lighting(-1,obj)" style="float:left;"><span ng-class="{true:'glyphicon glyphicon-star',false:'glyphicon glyphicon-star-empty'}[detail_star]"></span></button>
+                        <button class="icon" ng-click="fb_connect()" style="float:right"><img src="http://cs-server.usc.edu:45678/hw/hw8/images/facebook.png" style="width:20px;height:20px"></button>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">pictures</div>
+                <div class="panel-body">
+            <div class="progress" ng-show="detailProcessed"style="margin:50px auto;">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%;">
+                <span class="sr-only">45% Complete</span>
+            </div>
+                    </div>
+            <div class="panel-group" id="albums" ng-show="!detailProcessed" style="margin-bottom: 10px;">
+                <div class="panel panel-default" ng-repeat="row in detailData.albums.data|limitTo:5">
+                    <div class="panel-heading" id="{{row.name}}">
+                        <a class="collapsed" data-toggle="collapse" style="text-decoration:none;" data-parent="#albums" href="#{{$index}}" ng-show="row.photos!=undefined&&row.photos.data.length!=0">{{row.name}}</a>
+                        <span ng-show="row.photos==undefined||row.photos.data.length==0">{{row.name}}</span>
+                    </div>
+                    <div ng-class="{true:'panel-collapse in',false:'panel-collapse collapse'}[$index==0&&row.photos!=undefined]" aria-labelledby="{{row.name}}"id="{{$index}}">
+                      <div class="panel-body">
+                          <div ng-repeat="photo in row.photos.data|limitTo:2">
+                              <div class="well well-default album-well" style="background-color:white;"><a href="{{photo.picture}}" target=_blank><img ng-src="{{photo.picture}}" style="width:100%; border-radius:10px;"></a></div>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div ng-show="check(detailData,'albums')" style="margin-top: 10px;">
+                    
+                    <div style="height: 30px;background-color: #FCF7E4;vertical-align: middle;padding-top: 5px;color: tan;">No data found</div>
+                </div>
+            </div>
+                </div>
+                        </div>
+            </div>
+                    <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default" id="posts">
+                <div class="panel-heading">posts</div>
+                <div class="progress" ng-show="detailProcessed" style="margin:50px auto;">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45% ">
+                <span class="sr-only">45% Complete</span>
+                </div>
+                </div>
+                <div class="panel-body" ng-show="!detailProcessed" style="margin: 10px 0px;">
+                <div class="well well-default" style="overflow:hidden"ng-repeat="row in detailData.posts.data|limitTo:5">
+                    <div style="float:left; margin-right:15px; margin-top:5px"><img ng-src="{{detailData.picture.data.url}}" style="width:30px;height:30px;"></div>
+                    <div style="float:left;">
+                    {{detailData.name}}<br>
+                    <span style="color:grey;">{{time_change(row.created_time)}}</span><br><br>
+                    </div>
+                    <div style="clear:both;">
+                    {{row.message}}
+                    </div>
+                    </div>
+                <div ng-show="check(detailData,'posts')">
+                    <div style="height: 30px;background-color: #FCF7E4;vertical-align: middle;padding-top: 5px;color: tan;">No data found</div>
+                </div>
+                </div>
+            </div>
+                    </div>
+            </div>
+        </div>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+        <script src="hw8.js"></script>
+    </body>
+</html>

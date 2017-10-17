@@ -1,0 +1,198 @@
+ body
+            {
+                overflow-x:hidden;
+            }
+.main, .detail
+{
+  transition: all linear 0.5s;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.main.ng-hide
+{
+  width: 100%;
+  top:0px;
+  left: 100%;
+}
+.detail.ng-hide
+{
+    width:100%;
+    top:0px;
+    left:-100%;
+}
+            .glyphicon-star
+            {
+                color:yellow;
+            }
+            .nav-tabs.nav-justified>.active>a, .nav-tabs.nav-justified>.active>a:focus, .nav-tabs.nav-justified>.active>a:hover
+            {
+                background-color:#3B5998;
+                color:white;
+            }
+            .album-well
+            {
+                padding: 0px;
+                border-radius: 10%;
+            }
+            .icon
+            {
+                background-color: white;
+                border: 1px solid #DEDEDE;
+                height: 30px;
+                width: 40px;
+            }
+            #clear
+            {
+                border:1px solid #3B5998;
+                width:50px;
+                margin-left:100px;
+            }
+            #question
+            {
+                border: 1px solid transparent;
+                background-color: #3B5998;
+                color: white;
+                width: 70px;
+                height: 25px;
+                margin: -4px;
+                padding: 10px 0px 25px 0px;
+                display: inline;        
+            }
+            .progress
+            {
+                width: 70%;
+                margin: 300px auto;
+            }
+            
+            @media(max-width:768px)
+            {
+                .main, .detail
+                {
+                    width:90%;
+                    margin-left: 5%;
+                    margin-top:5px;
+                }
+                .icon
+                {
+                    
+                }
+                #back-button
+                {
+                    height: 30px;
+                    width: 100px;
+                }
+                .detail-button
+                {
+                    width:40%
+                }
+                .detail-nav
+                {
+                    padding-top:10px;
+                }
+                .next_prev
+                {
+                    width:200px;
+                    margin:0px auto;
+                }
+                .np
+                {
+                    width: 80px;
+                    height: 40px;
+                    border-radius:10px;
+                }
+                .nav-tabs.nav-justified > li > a
+                {
+                    border-radius: 0px;
+                    height: 20px;
+                    padding: 0px;
+                }
+                .nav-tabs.nav-justified > li
+                {
+                    height:20px;
+                }
+                .progress
+                {
+                    margin: 100px auto;
+                }
+                #input_box
+                {
+                    height: 40px;
+                    overflow: hidden;
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+                #nav
+                {
+                    -webkit-border-radius:0px;
+                    width: 40%;
+                    height: 30px;
+                }
+                #table
+                {
+                    width:100%;
+                    margin:0 auto;
+                    overflow-x:scroll;
+                }
+                #question
+                {
+                    width: 40px;
+                }
+                .table
+                {
+                    width:150%;
+                }
+                #clear
+                {
+                    width:60px;
+                    border-radius: 0px;
+                    height: 30px;
+                    float: right;
+                    margin-left:20%;
+                }
+            }
+            @media(min-width:768px)
+            {
+                #input_box
+                {
+                    overflow:hidden;
+                }
+                .container-fluid
+                {
+                    padding-top:10px;
+                }
+                .detail-nav
+                {
+                    padding-top:20px;
+                }
+                #back-button
+                {
+                    width:150px;
+                }
+                .detail-button
+                {
+                    width:200px;
+                }
+                .np
+                {
+                    width: 200px;
+                    height: 50px;
+                }
+                #nav
+                {
+                    width: 400px;
+                    height: 32px;
+                    display: inline;
+                    margin: 1px 0px;
+                }
+                .next_prev
+                {
+                    width:500px;
+                    margin:0px auto;
+                }
+            }
+            #table
+            {
+                width:100%;
+            }
