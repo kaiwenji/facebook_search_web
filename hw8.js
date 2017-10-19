@@ -23,7 +23,7 @@
                         $scope.light[i]=false;
                     }
                 $scope.inputValue="";
-                $scope.address='http://http://nunki.usc.edu:35614/index.php?input=';
+                $scope.address='http://nunki.usc.edu:35614/index.php?input=';
                 $scope.next="";
                 $scope.prev="";
                 $scope.tab=0;
@@ -170,7 +170,7 @@
                             $scope.obj.type=$scope.tab;
                         }
                     setTimeout(exchange(),500);
-                    $scope.detail='http://Sample-env.3pegy3jkvm.us-west-2.elasticbeanstalk.com/?id='+obj.id+'&type='+obj.type;
+                    $scope.detail='http://nunki.usc.edu:35614/index.php?id='+obj.id+'&type='+obj.type;
                     $scope.connect($scope.detail,1);
                     $scope.obj=obj;
                     if(!("type" in $scope.obj))
@@ -289,28 +289,33 @@
                     }
                     $scope.prev="";
                     $scope.next="";
+                    console.log(input);
                     $.ajax({
                         url:input,
-                        dataType:"jsonp"
+                        dataType:"jsonp",
+                        jsonp:"callback",
+                        type:"GET"
                     })
                     .then(function(response){
                         $scope.$apply(function(){
                                 $scope.isProcessed=false;
-                                if(response.name!=undefined){
-                                    $scope.result=response.name;
-                                    $scope.select($scope.tab);
+                                if(response.id!=undefined){
+                                    console.log(response);
+                                    $scope.detailData=response;
+                                    $scope.detailProcessed=false;
                                 }
-                                else if(response.id!=undefined)
+                                else if(response.name!=undefined)
                                     {
-                                        $scope.detailData=response.id[0];
-                                        $scope.detailProcessed=false;
+
+                                        $scope.result=response.name;
+                                        $scope.select($scope.tab);
                                     }
                                 else
                                 {
                                     $scope.update(response);
                                 }
                         });
-                    },function(response){alert(response.text);$scope.isProcessed=false;$scope.detailProcessed=false;});
+                    },function(response){console.log(response.name);$scope.isProcessed=false;$scope.detailProcessed=false;});
                 };
                 $scope.clear=function(){
                     $scope.inputValue="";
