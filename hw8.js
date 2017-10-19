@@ -23,7 +23,7 @@
                         $scope.light[i]=false;
                     }
                 $scope.inputValue="";
-                $scope.address='http://Sample-env.3pegy3jkvm.us-west-2.elasticbeanstalk.com/?input=';
+                $scope.address='http://http://nunki.usc.edu:35614/index.php?input=';
                 $scope.next="";
                 $scope.prev="";
                 $scope.tab=0;
